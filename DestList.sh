@@ -17,7 +17,11 @@ file="${HOME}/destination.list"
 echo -e "${BlackGreen}Please enter the hostname / IP address to add to your list:${reset} "
 read -p "Is there any host you wanna add to your list ? [y] " answer
 
-while [[ -z ${answer} ]]; do
+#elif	[[ ${answer} = "n" || ${answer} = "no" ]]; then
+#	echo -e "${BlackBlue}NO DESTINATION${reset}"
+#	exit 0
+
+while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	answer="y"
 
 	while [[ ${answer} = "y" ]]; do
@@ -25,10 +29,16 @@ while [[ -z ${answer} ]]; do
 	read -p "Enter a name to associate your destination: " name
 	echo ${dest}:${name} >> ${file}
 	read -p "Is there any host to add to your list ? [y] " answer
+
+	if	[[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; then
+		answer="y"
+	elif	[[ ${answer} = "n" || ${answer} = "no" ]]; then
+	echo -e "${BlackGreen}your list has been saved to${reset} ${BlackBlue}'${HOME}/destinations.list'${reset}.${BlackGreen}you can check it out now${reset}"
+	echo $(cat ${file})
+	else
+	echo -e "${BlackRed}NO VALID INPUT${reset}"
+	read -p "Is there any host to add to your list ? [y] " answer
+	fi
 	done
+
 done
-
-if [[ ${answer} != "y" ]]; then
-
-	echo -e "${BlackGreen}your list has been saved to${reset} ${BlackBlue}'${HOME}/destinations.list'${reset} ${BlackGreen}you can check it out now${reset}"
-fi
