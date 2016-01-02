@@ -11,9 +11,6 @@ reset="\033[0m"
 
 # This is the destination to where the result will be saved
 file="${HOME}/destination.list"
-NUM_LINE=$(sort ${file} | wc -l)
-USERNAME=$(sort ${file} | cut -d ":" -f 3)
-NODE=$(sort ${file} | cut -d ":" -f 2)
 
 
 # This section is for creating a list from your most often used destinations
@@ -44,12 +41,22 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 
 done
 
-echo
-echo -e Â"${BlackGreen}Select your destionation:${reset} "
+NUM_LINE="$(sort ${file} | wc -l)"
+USERNAME="$(sort ${file} | cut -d ":" -f 3)"
+NODE="$(sort ${file} | cut -d ":" -f 2)"
 
-#select destination in ${LIST}
+echo
+echo -e Â"${BlackGreen}Here are your most often used destionations:${reset} "
 
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
 		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 	done
+
+read -p "Enter your number to connect: " number
+
+echo -e "${BlackViolet}DEST:$(sort ${file} | sed -n ${number}p | cut -d ":" -f 1)${reset}"
+echo -e "${BlackViolet}IP/HOSTNAME:$(sort ${file} | sed -n ${number}p | cut -d ":" -f 2)${reset}"
+echo -e "${BlackViolet}Username:$(sort ${file} | sed -n ${number}p | cut -d ":" -f 3)${reset}"
+
+read -p "Do you confirm ?[y]" confirm
