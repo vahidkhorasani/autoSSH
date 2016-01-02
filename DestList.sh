@@ -53,8 +53,3 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
 		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 	done
-
-
-
-#		case $d in
-#			$(echo ${LIST} | sed -n '{i}p'))	echo  $(${USERNAME} | sed -n '${i}p')@$(${NODE} | sed -n '${i}p');;
