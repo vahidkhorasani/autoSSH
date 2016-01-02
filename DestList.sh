@@ -13,6 +13,7 @@ reset="\033[0m"
 # This is the destination to where the result will be saved
 file="${HOME}/destination.list"
 
+# This section is for creating a list from your most often used destinations
 echo -e "${BlackGreen}Please enter the hostname / IP address to add to your list:${reset} "
 read -p "Is there any host you wanna add to your list ? [y] " answer
 
@@ -21,12 +22,13 @@ while [[ -z ${answer} ]]; do
 
 	while [[ ${answer} = "y" ]]; do
 	read -p  "Hostname/IP: " dest
-	echo ${dest} >> ${file}
+	read -p "Enter a name to associate your destination: " name
+	echo ${dest}:${name} >> ${file}
 	read -p "Is there any host to add to your list ? [y] " answer
 	done
 done
 
 if [[ ${answer} != "y" ]]; then
 
-	echo -e "${BlackGreen}your list has been saved to${reset} ${BlackBlue}'${HOME}/destinations.list'${reset}"
+	echo -e "${BlackGreen}your list has been saved to${reset} ${BlackBlue}'${HOME}/destinations.list'${reset} ${BlackGreen}you can check it out now${reset}"
 fi
