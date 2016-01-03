@@ -3,7 +3,6 @@
 # These are for changing the format of texts
 BlackRed="\033[31;40m"
 BlackGreen="\033[32;40m"
-BlackYellow="\033[33;40m"
 BlackBlue="\033[34;40m"
 BlackViolet="\033[35;40m"
 BlackCyan="\033[36;40m"
