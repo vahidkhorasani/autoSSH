@@ -13,7 +13,17 @@ reset="\033[0m"
 file="${HOME}/destination.list"
 touch ${file}
 
-# This section is for creating a list from your most often used destinations
+######## This section is for creating a list from your most often used destinations
+
+# This while loop is for skipping the edition of your list if it exist.
+while [[ -f ${file} ]]; do
+	
+	if [[ $# -eq 1 ]]; then
+
+while getopts e option; do
+	case ${option} in
+		e)
+
 echo -e "${BlackGreen}Make your own list${reset} "
 read -p "Is there any host you wanna add to your list ? [y] " answer
 
@@ -40,6 +50,13 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 
 	done
 
+done;;
+		#?) echo -e "${BlackRed}I don't know what ${OPTARG} is!";;
+	esac
+done
+
+fi
+		break
 done
 
 NUM_LINE="$(sort ${file} | wc -l)"
