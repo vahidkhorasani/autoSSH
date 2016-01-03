@@ -45,7 +45,7 @@ done
 NUM_LINE="$(sort ${file} | wc -l)"
 
 echo
-echo -e Â"${BlackGreen}Here are your most often used destionations:${reset} "
+echo -e Ã‚"${BlackGreen}Here are your most often used destionations:${reset} "
 
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
