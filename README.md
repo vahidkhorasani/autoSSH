@@ -1,4 +1,4 @@
-############################################################ Welcome to SSH automation ##################################################################
+############################################# Welcome to SSH automation ###################################################
 
 This is a simple bash script for any one (specially for SysAdmins) whose his major deal is working with servers and other devices. It lets you select the 
 destination where you wanna connect to using SSH, just by typing a number that is associated with your destination in the list of destinations.
