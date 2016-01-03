@@ -7,3 +7,6 @@ To use this script you must at first create a list of destinations that you deal
 destinations. In this script our assumption is that you wanna connect to your devices using public key authentication which is more secure than password 
 authentication. On the other, if you wanna use username and password you must enter your credentials in the script which make the script so vulnerable.
 
+So,at first you execute the script and "Make your list" by giving the required information to script such as Hostname/IP address,username that you use to login and your favorite name for your 
+destination.After completeing the list it will be saved in your home directory and you can check it out or edit it anytime you like.
+

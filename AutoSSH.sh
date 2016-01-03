@@ -45,7 +45,7 @@ done
 NUM_LINE="$(sort ${file} | wc -l)"
 
 echo
-echo -e Â"${BlackGreen}Here are your most often used destionations:${reset} "
+echo -e "${BlackGreen}Here are your most often used destionations:${reset} "
 
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
@@ -53,6 +53,15 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	done
 
 read -p "Enter your number to connect: " number
+
+while [[ ${number} -gt ${NUM_LINE} ]]; do
+	if [[ ${number} -gt ${NUM_LINE} ]]; then
+		echo -e "${BlackRed}your number is not in the valid range.${reset}"
+		read -p "your number is: " number
+	else
+		exit 0
+	fi
+done
 
 USERNAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 3)"
 NODE_IP="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 2)"
