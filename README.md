@@ -1,16 +1,27 @@
 Welcome to SSH automation
 
-This is a simple bash script for any one (specially for SysAdmins) whose his major deal is working with servers and other devices. It lets you select the 
-destination where you wanna connect to using SSH, just by typing a number that is associated with your destination in the list of destinations.
+AutoSSH
+=========
+Version 1.0 - Sun 3 Jan 2015
+by Vahid Khorasani
+<vh.khorasani@yahoo/gmail.com>
 
-To use this script you must at first create a list of destinations that you deal with them most often. This list is defined with hostname or IP address of 
-destinations. In this script our assumption is that you wanna connect to your devices using public key authentication which is more secure than password 
-authentication. On the other, if you wanna use username and password you must enter your credentials in the script which make the script so vulnerable.
 
-So,at first you will execute the script and will "Make your list" by giving the required information to the script such as Hostname/IP address,username that you use to login and your favorite name 
-for your destination.After completeing the list it will be saved in your home directory and you can check it out or edit it anytime you want. you can use "-e" option with the script to edit your 
-list. So, if you have already run the script and the "destination.list" file exist on your system the script will only show you your own list and ask you about the destination you wanna connect just by 
-entering a number.
+Introduction 
+================= 
+This is a simple bash script for anyone (specially for SysAdmins) whose his major deal is working with servers and other devices like that. This script create a list 
+from your most often used destinations by getting required information from you. After this list is been created it'll be saved on your system and this script will refer to it anytime you try to 
+connect to your destination.After your create your list the only thing that is needed is JUST a number that script will ask you when ever you wanna connect.
+
+This list is defined with hostname or IP address of destinations and ofcourse the username that you use for connecting. In this script my assumption is that you use public key authentication method 
+to connect to your devices ,which is more secure than password authentication. On the other, if you wanna use username and password you must enter your credentials in the script which make the script 
+so unsecure and vulnerable.
+
+Running the script for 1st time 
+=================================== 
+When you run the script for the first time it will try to make a list with your help so you must run it with "-e" flag and you can 
+also use this option when ever you want to add new destination to your list.So, if you have already run the script and the "destination.list" file exist on your system the script will only show you 
+your list and will ask you about the destination you wanna connect JUST by entering a number.
 
 
 I hope you enjoy it !
