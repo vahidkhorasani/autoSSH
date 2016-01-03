@@ -18,7 +18,10 @@ touch ${file}
 # This while loop is for skipping the edition of your list if it exist.
 while [[ -f ${file} ]]; do
 
-	if [[ $# -eq 1 ]]; then
+	if [[ ! -s ${file} && $# -eq 0 ]]; then
+		echo -e "${BlackBlue}your list is empty,use '-e' option to fill it${reset}"
+		exit 0
+	elif [[ $# -eq 1 ]]; then
 
 while getopts :e option; do
 	case ${option} in
