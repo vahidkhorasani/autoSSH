@@ -11,4 +11,6 @@ So,at first you will execute the script and will "Make your list" by giving the 
 for your destination.After completeing the list it will be saved in your home directory and you can check it out or edit it anytime you want. you can use "-e" option with the script to edit your 
 list. So, if you have already run the script and the "destination.list" file exist on your system the script will only show you your own list and ask you about the destination you wanna connect just by 
 entering a number.
+
+
 I hope you enjoy it !
