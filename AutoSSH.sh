@@ -14,7 +14,7 @@ touch ${file}
 
 ######## This section is for creating a list from your most often used destinations
 
-# This while loop is for skipping the edition of your list if it exist.
+# This part of script is for skipping the edition of your list if it exists.
 while [[ -f ${file} ]]; do
 
 	if [[ ! -s ${file} && $# -eq 0 ]]; then
@@ -22,31 +22,34 @@ while [[ -f ${file} ]]; do
 		exit 0
 	elif [[ $# -eq 1 ]]; then
 
+# This part is for edit flag
 while getopts :e option; do
 	case ${option} in
 		e)
 
 echo -e "${BlackGreen}Make your own list${reset} "
-read -p "Is there any host you wanna add to your list ? [y] " answer
+read -p "Are you sure you wanna edit your list ? [y] " answer
 
 while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	answer="y"
 
   	while [[ ${answer} = "y" ]]; do
-	read -p  "Hostname/IP: " dest
-	read -p "Enter a name to associate your destination: " name
-	read -p "Enter the username you use to login: " user
+	read -p  "Enter Hostname/IP: " dest
+	read -p "Pick a name fo this IP address: " name
+	read -p "Enter the username you wanna use to login: " user
 	echo "'${name}'":${dest}:${user} >> ${file}
-	read -p "Is there any host to add to your list ? [y] " answer
+	read -p "Is there any other hosts you wanna add to your list ? [y] " answer
 
 	  if	[[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; then
 	  	answer="y"
 	  elif	[[ ${answer} = "n" || ${answer} = "no" ]]; then
 		echo -e "your list has been saved to ${BlackGreen}'${HOME}/destinations.list'${reset}"
-		echo -ne "${BlackBlue}$(cat ${file})\n${reset}"
+
+# Uncomment the following line if you wanna check the whole list.
+		#echo -ne "${BlackBlue}$(cat ${file})\n${reset}"
 	  else
 		echo -e "${BlackRed}NO VALID INPUT${reset}"
-		read -p "Is there any host to add to your list ? [y] " answer
+		read -p "Is there any other hosts you wanna add to your list ? [y] " answer
 	  fi
 
 
@@ -75,7 +78,7 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 read -p "Do you wanna connect now ? [y] " connect
 	if [[ -z ${connect} || ${connect} = "y" || ${connect} = "yes" ]]; then
 
-read -p "Enter your number to connect: " number
+read -p "Enter a number to connect: " number
 
 while [[ ${number} -gt ${NUM_LINE} ]]; do
 	if [[ ${number} -gt ${NUM_LINE} ]]; then
@@ -94,7 +97,7 @@ echo -e "${BlackViolet}DEST:${NODE_NAME}${reset}"
 echo -e "${BlackViolet}IP/HOSTNAME:${NODE_IP}${reset}"
 echo -e "${BlackViolet}Username:${USERNAME}${reset}"
 
-read -p "Do you confirm ?[y]" confirm
+read -p "confirm ?[y]" confirm
 
 if [[ -z ${confirm} || ${confirm} = "y" || ${confirm} = "yes" ]]; then
 	ssh ${USERNAME}@${NODE_IP}
