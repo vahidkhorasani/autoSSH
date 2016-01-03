@@ -17,10 +17,10 @@ touch ${file}
 
 # This while loop is for skipping the edition of your list if it exist.
 while [[ -f ${file} ]]; do
-	
+
 	if [[ $# -eq 1 ]]; then
 
-while getopts e option; do
+while getopts :e option; do
 	case ${option} in
 		e)
 
@@ -51,13 +51,14 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	done
 
 done;;
-		#?) echo -e "${BlackRed}I don't know what ${OPTARG} is!";;
+		?) echo -e "${BlackRed}I don't know what ${OPTARG} is!";;
 	esac
 done
 
 fi
 		break
 done
+
 
 NUM_LINE="$(sort ${file} | wc -l)"
 
@@ -68,6 +69,9 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
 		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 	done
+
+read -p "Do you wanna connect now ? [y] " connect
+	if [[ -z ${connect} || ${connect} = "y" || ${connect} = "yes" ]]; then
 
 read -p "Enter your number to connect: " number
 
@@ -94,4 +98,6 @@ if [[ -z ${confirm} || ${confirm} = "y" || ${confirm} = "yes" ]]; then
 	ssh ${USERNAME}@${NODE_IP}
 else
 	exit 0
+
+    fi
 fi
