@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # These are for changing the format of texts
-BlackRed="\033[31;40m"
-BlackGreen="\033[32;40m"
-BlackBlue="\033[34;40m"
-BlackViolet="\033[35;40m"
-BlackCyan="\033[36;40m"
+BlackRed="\033[31m"
+BlackGreen="\033[32m"
+BlackBlue="\033[34m"
+BlackViolet="\033[35m"
+BlackCyan="\033[36m"
 reset="\033[0m"
 
 # This is the destination to where the result will be saved
