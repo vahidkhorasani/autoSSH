@@ -2,7 +2,7 @@ Welcome to SSH automation
 
 AutoSSH
 =========
-Version 1.0 - Sun 3 Jan 2015
+Version 1.0 - Sun 3 Jan 2016
 by Vahid Khorasani
 <vh.khorasani@yahoo/gmail.com>
 
