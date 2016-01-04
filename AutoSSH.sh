@@ -100,16 +100,18 @@ USERNAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 3)"
 NODE_IP="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 2)"
 NODE_NAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 1)"
 
-echo -e "${BlackViolet}DEST:${NODE_NAME}${reset}"
-echo -e "${BlackViolet}IP/HOSTNAME:${NODE_IP}${reset}"
-echo -e "${BlackViolet}Username:${USERNAME}${reset}"
+echo -e "${BlackGreen}Username:${USERNAME}${reset}"
+echo -e "${BlackGreen}IP/HOSTNAME:${NODE_IP}${reset}"
+echo -e "${BlackGreen}NAME:${NODE_NAME}${reset}"
 
-read -p "confirm ?[y]" confirm
-
-if [[ -z ${confirm} || ${confirm} = "y" || ${confirm} = "yes" ]]; then
 	ssh ${USERNAME}@${NODE_IP}
-else
-	exit 0
 
-    fi
+# Uncomment this if you want to confirm the information before connecting.
+#read -p "confirm ?[y]" confirm
+#if [[ -z ${confirm} || ${confirm} = "y" || ${confirm} = "yes" ]]; then
+#ssh ${USERNAME}@${NODE_IP}
+#else
+#exit 0
+#fi
+
 fi
