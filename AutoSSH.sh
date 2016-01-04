@@ -21,7 +21,7 @@ while [[ -f ${file} ]]; do
 
 		cat <<- EOF
 		This is the first time you are running this script.
-		To get the most of it you need to make your own list including the most often used destinations.
+		To get the most of it you need to make your own list including your most often used destinations.
 		So, if you like to make it now, try "AutoSSH" with "-e" option.
 		Hope you enjoy it !
 		EOF
