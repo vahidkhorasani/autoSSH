@@ -27,9 +27,10 @@ while [[ -f ${file} ]]; do
 		EOF
 
 		exit 0
-	elif [[ $# -eq 1 ]]; then
 
 # This part is for edit flag
+	elif [[ $# -eq 1 ]]; then
+
 while getopts :e option; do
 	case ${option} in
 		e)
@@ -52,7 +53,7 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	  elif	[[ ${answer} = "n" || ${answer} = "no" ]]; then
 		echo -e "your list has been saved to ${BlackGreen}'${HOME}/destinations.list'${reset}"
 
-# Uncomment the following line if you wanna check the whole list.
+# Uncomment the following line if you wanna check the destination list with more detail.
 		#echo -ne "${BlackBlue}$(cat ${file})\n${reset}"
 	  else
 		echo -e "${BlackRed}NO VALID INPUT${reset}"
@@ -82,6 +83,7 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 	done
 
+# Script will be started from here if you run it without edit optin.
 read -p "Do you wanna connect now ? [y] " connect
 	while [[ -n ${connect} || ${connect} != "y" || ${connect} != "yes" || ${connect} != "n" || ${connect} != "no" ]]; do
 
