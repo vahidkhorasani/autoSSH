@@ -83,6 +83,8 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	done
 
 read -p "Do you wanna connect now ? [y] " connect
+	while [[ -n ${connect} || ${connect} != "y" || ${connect} != "yes" || ${connect} != "n" || ${connect} != "no" ]]; do
+
 	if [[ -z ${connect} || ${connect} = "y" || ${connect} = "yes" ]]; then
 
 read -p "Enter a number to connect: " number
@@ -105,7 +107,7 @@ echo -e "${BlackGreen}IP/HOSTNAME:${NODE_IP}${reset}"
 echo -e "${BlackGreen}NAME:${NODE_NAME}${reset}"
 
 	ssh ${USERNAME}@${NODE_IP}
-
+	exit 0
 # Uncomment this if you want to confirm the information before connecting.
 #read -p "confirm ?[y]" confirm
 #if [[ -z ${confirm} || ${confirm} = "y" || ${confirm} = "yes" ]]; then
@@ -113,5 +115,11 @@ echo -e "${BlackGreen}NAME:${NODE_NAME}${reset}"
 #else
 #exit 0
 #fi
-
+	elif [[ ${connect} = "n" || ${connect} = "no" ]]; then
+		exit 0
+	else
+		echo -e "${BlackRed}NO VALID INPUT!${reset}"
+		read -p "Do you wanna connect now ? [y] " connect
 fi
+
+done
