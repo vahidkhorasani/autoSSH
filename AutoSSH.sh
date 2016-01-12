@@ -43,7 +43,7 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 
   	while [[ ${answer} = "y" ]]; do
 	read -p  "Enter Hostname/IP: " dest
-	read -p "Pick a name fo this IP address: " name
+	read -p "Pick a name for this IP address: " name
 	read -p "Enter the username you wanna use to login: " user
 	echo "'${name}'":${dest}:${user} >> ${file}
 	read -p "Is there any other hosts you wanna add to your list ? [y] " answer
