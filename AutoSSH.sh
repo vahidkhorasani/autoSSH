@@ -10,8 +10,9 @@ reset="\033[0m"
 
 # This is the destination to where the result will be saved
 file="${HOME}/destination.list"
+backup="/tmp/destination.list.backup"
 touch ${file}
-
+touch ${backup}
 ######## This section is for creating a list from your most often used destinations
 
 # This part of script is for skipping the edition of your list if it exists.
@@ -76,6 +77,8 @@ done
 NUM_LINE="$(sort ${file} | wc -l)"
 
 echo
+rsync --append ${file} ${backup}
+echo -e "${BlackCyan}you have also a backup list at '${backup}'${reset}"
 echo -e "${BlackGreen}Here are your most often used destionations:${reset} "
 
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
