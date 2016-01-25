@@ -77,7 +77,7 @@ done
 NUM_LINE="$(sort ${file} | wc -l)"
 
 echo
-rsync --append ${file} ${backup}
+rsync ${file} ${backup}
 echo -e "${BlackCyan}you have also a backup list at '${backup}'${reset}"
 echo -e "${BlackGreen}Here are your most often used destionations:${reset} "
 
