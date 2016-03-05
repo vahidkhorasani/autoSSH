@@ -45,7 +45,7 @@ while getopts :endh option; do
 			done
 			read -p "Enter a number to delete: " del
 			sed "${del}d" ${backup} | tee ${file}
-			rsync ${file} > ${backup}
+			cat ${file} > ${backup}
 			exit 0
 			;;
 		h)
@@ -54,12 +54,34 @@ while getopts :endh option; do
 			;;
 		e)
 echo "Make your own list"
+
+read -p "Continue with editing your list ? [y] " answer
+while [[ -n ${answer} ]]; do
+	if [[ ${answer} = "y" || ${answer} = "yes" ]]; then
+		break
+	elif  [[ ${answer} = "n" || ${answer} = "no" ]]; then
+		exit 0
+	else
+		echo -e "${BlackRed}NO VALID INPUT${reset}"
+		read -p "Continue with editing your list ? [y] " answer
+	fi
+done
+
 read -p "Do you want to add destinations to your '/etc'hosts' file too ? [y] " ETC
+while [[ -n ${ETC} ]]; do
+	if [[ ${ETC} = "y" || ${ETC} = "yes" || ${ETC} = "no" || ${ETC} = "n" ]]; then
+		break
+	else
+		echo -e "${BlackRed}NO VALID INPUT${reset}"
+		read -p "Do you want to add destinations to your '/etc'hosts' file too ? [y] " ETC
+	fi
+done
 
 if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]] && [[ ${USER} != root ]]; then
 	echo -e "${BlackRed}permission denied${reset}"
 	exit 0
 fi
+
 while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	answer="y"
 
@@ -103,9 +125,9 @@ done
 	break
 done
 
-rsync ${file} ${backup}
-echo "Here are your most often used destionations: "
+cat ${file} > ${backup}
 
+echo "Here are your most often used destionations: "
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
 		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
