@@ -10,6 +10,6 @@ by Vahid Khorasani
 Introduction 
 ================= 
 It's free and you can download and use it and also redistribute it.There is a manual page which is associated with the program.Please download it and then copy it to the manpath of your system to have a better understanding of it.   
-You can also add this script to your PATH and have it as a shell command to feel more comfortabel.
+You can also add this script to your PATH and have it as one of your shell commands.
 
 I hope you enjoy it !

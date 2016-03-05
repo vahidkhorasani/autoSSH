@@ -1,50 +1,60 @@
 #!/bin/bash
-
-# These are for changing the format of texts
 BlackRed="\033[31m"
 BlackGreen="\033[32m"
 reset="\033[0m"
+file="${HOME}/dest.list"
+DELETE="/tmp/del"
+backup="/tmp/dest.list.backup"
+NUM_LINE="$(sort ${file} | wc -l)"
 
-# This is the destination to where the result will be saved
-file="${HOME}/destination.list"
-hosts="/tmp/hosts"
-backup="/tmp/destination.list.backup"
 touch ${file}
 touch ${backup}
-touch ${hosts}
-######## This section is for creating a list from your most often used destinations
-# This part of script is for skipping the edition of your list if it exists.
+perm=$(stat -c %a ${backup})
+
 help()
 {
 	cat <<- EOF
-	usage: autossh [-he] 
-	    Creates a list from your most often used destinations and 
-	    refers to this list anytime you try to connet through SSH
+		  usage: autossh [-hedn] [remote_hosname] 
+	        Creates a list from your most often used destinations and 
+	        will refer to it anytime you try to connet through SSH.
 
-	    Options:
-	      -h    show this help and exit
-	      -e    edit the destination list
+		  Options:
+		    -h	show this help and exit
+		    -e	create/edit the dest list
+		    -d	delete from list
+		    -n	using autossh with destination name instead of selecting it from list
 	EOF
 }
+
 while [[ -f ${file} ]]; do
 	if [[ ! -s ${file} && $# -eq 0 ]]; then
-		cat <<- EOF
-		You haven't any destination list to be used by 'AutoSSH'.
-		you need to make your own list including your most often used destinations
-		EOF
 		help
 		exit 0
+	elif [[ $# -gt 0 ]]; then
 
-	elif [[ $# -eq 1 ]]; then
-while getopts :eh option; do
+while getopts :endh option; do
 	case ${option} in
-		h) help
-		   exit 0
-		   ;;
+		n)
+			ssh $(grep -i $2 ${file} | cut -d ":" -f 3)@$2
+			exit 0
+			;;
+		d)	
+			for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
+			do
+			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
+			done
+			read -p "Enter a number to delete: " del
+			sed "${del}d" ${backup} | tee ${file}
+			rsync ${file} > ${backup}
+			exit 0
+			;;
+		h)
+			help
+			exit 0
+			;;
 		e)
 echo "Make your own list"
-read -p "Continue with editing your list ? [y] " answer
-read -p "Do you wanna add your destinations to your '/etc/hosts' file ? [y] " ETC
+read -p "Do you want to add destinations to your '/etc'hosts' file too ? [y] " ETC
 
 if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]] && [[ ${USER} != root ]]; then
 	echo -e "${BlackRed}permission denied${reset}"
@@ -58,10 +68,15 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	read -p "Pick a name for this IP address: " name
 	read -p "Enter the username you wanna use to login: " user
 	echo "'${name}'":${dest}:${user} >> ${file}
-	echo "${dest}	${name}" >> ${hosts}
+	if [[ ! ${perm} = 666 ]]; then
+		chmod 666 ${backup}
+	fi
+	if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]]; then
+			echo "${dest}	${name}" >> /etc/hosts
+	fi
 	read -p "Is there any other hosts you wanna add to your list ? [y] " answer
 
-	  if	[[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; then
+	  if [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; then
 	  	answer="y"
 	  elif	[[ ${answer} = "n" || ${answer} = "no" ]]; then
 		echo "your list has been saved to '${file}'"
@@ -72,9 +87,7 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 		echo -e "${BlackRed}NO VALID INPUT${reset}"
 		read -p "Is there any other hosts you wanna add to your list ? [y] " answer
 	  fi
-
 	done
-
 done;;
 		\?) echo "illegal option -- $OPTARG"
 			help
@@ -83,14 +96,12 @@ done;;
 	esac
 done
 
-if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]]; then
-	cat ${hosts} >> /etc/hosts
-fi
-
-fi
+#		if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]]; then
+#			cat ${hosts} >> /etc/hosts
+#		fi
+	fi
 	break
 done
-NUM_LINE="$(sort ${file} | wc -l)"
 
 rsync ${file} ${backup}
 echo "Here are your most often used destionations: "
@@ -99,7 +110,7 @@ for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
 	do
 		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 	done
-# Script will be started from here if you run it without '-e' option
+
 read -p "Do you wanna connect now ? [y] " connect
 	while [[ -n ${connect} || ${connect} != "y" || ${connect} != "yes" || ${connect} != "n" || ${connect} != "no" ]]; do
 	if [[ -z ${connect} || ${connect} = "y" || ${connect} = "yes" ]]; then
