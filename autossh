@@ -5,11 +5,11 @@ reset="\033[0m"
 file="${HOME}/dest.list"
 DELETE="/tmp/del"
 backup="/tmp/dest.list.backup"
-NUM_LINE="$(sort ${file} | wc -l)"
 
 touch ${file}
 touch ${backup}
 perm=$(stat -c %a ${backup})
+NUM="$(sort ${file} | wc -l)"
 
 help()
 {
@@ -39,13 +39,13 @@ while getopts :endh option; do
 			exit 0
 			;;
 		d)	
-			for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
+			for (( i=1 ; i<=${NUM} ; i+=1 ))
 			do
 			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 			done
 			read -p "Enter a number to delete: " del
 			sed "${del}d" ${backup} | tee ${file}
-			rsync ${file} > ${backup}
+			cat ${file} > ${backup}
 			exit 0
 			;;
 		h)
@@ -54,12 +54,34 @@ while getopts :endh option; do
 			;;
 		e)
 echo "Make your own list"
+
+read -p "Continue with editing your list ? [y] " answer
+while [[ -n ${answer} ]]; do
+	if [[ ${answer} = "y" || ${answer} = "yes" ]]; then
+		break
+	elif  [[ ${answer} = "n" || ${answer} = "no" ]]; then
+		exit 0
+	else
+		echo -e "${BlackRed}NO VALID INPUT${reset}"
+		read -p "Continue with editing your list ? [y] " answer
+	fi
+done
+
 read -p "Do you want to add destinations to your '/etc'hosts' file too ? [y] " ETC
+while [[ -n ${ETC} ]]; do
+	if [[ ${ETC} = "y" || ${ETC} = "yes" || ${ETC} = "no" || ${ETC} = "n" ]]; then
+		break
+	else
+		echo -e "${BlackRed}NO VALID INPUT${reset}"
+		read -p "Do you want to add destinations to your '/etc'hosts' file too ? [y] " ETC
+	fi
+done
 
 if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]] && [[ ${USER} != root ]]; then
 	echo -e "${BlackRed}permission denied${reset}"
 	exit 0
 fi
+
 while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	answer="y"
 
@@ -89,7 +111,7 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	  fi
 	done
 done;;
-		\?) echo "illegal option -- $OPTARG"
+		\?) echo -e "${BlackRed}illegal option -- $OPTARG${reset}"
 			help
 			exit 1
 			;;
@@ -103,14 +125,13 @@ done
 	break
 done
 
-rsync ${file} ${backup}
+cat ${file} > ${backup}
+NUM_LINE="$(sort ${file} | wc -l)"
 echo "Here are your most often used destionations: "
-
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
-	do
-		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
-	done
-
+  do
+	echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
+  done
 read -p "Do you wanna connect now ? [y] " connect
 	while [[ -n ${connect} || ${connect} != "y" || ${connect} != "yes" || ${connect} != "n" || ${connect} != "no" ]]; do
 	if [[ -z ${connect} || ${connect} = "y" || ${connect} = "yes" ]]; then
