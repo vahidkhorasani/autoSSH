@@ -5,17 +5,17 @@ reset="\033[0m"
 file="${HOME}/dest.list"
 DELETE="/tmp/del"
 backup="/tmp/dest.list.backup"
-NUM_LINE="$(sort ${file} | wc -l)"
 
 touch ${file}
 touch ${backup}
 perm=$(stat -c %a ${backup})
+NUM="$(sort ${file} | wc -l)"
 
 help()
 {
 	cat <<- EOF
-		  usage: autossh [-hedn] [remote_hosname] 
-	        Creates a list from your most often used destinations and 
+		  usage: autossh [-hedn] [remote_hosname]
+	        Creates a list from your most often used destinations and
 	        will refer to it anytime you try to connet through SSH.
 
 		  Options:
@@ -38,8 +38,8 @@ while getopts :endh option; do
 			ssh $(grep -i $2 ${file} | cut -d ":" -f 3)@$2
 			exit 0
 			;;
-		d)	
-			for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
+		d)
+			for (( i=1 ; i<=${NUM} ; i+=1 ))
 			do
 			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 			done
@@ -111,7 +111,7 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	  fi
 	done
 done;;
-		\?) echo "illegal option -- $OPTARG"
+		\?) echo -e "${BlackRed}illegal option -- $OPTARG${reset}"
 			help
 			exit 1
 			;;
@@ -126,13 +126,12 @@ done
 done
 
 cat ${file} > ${backup}
-
+NUM_LINE="$(sort ${file} | wc -l)"
 echo "Here are your most often used destionations: "
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
-	do
-		echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
-	done
-
+  do
+	echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
+  done
 read -p "Do you wanna connect now ? [y] " connect
 	while [[ -n ${connect} || ${connect} != "y" || ${connect} != "yes" || ${connect} != "n" || ${connect} != "no" ]]; do
 	if [[ -z ${connect} || ${connect} = "y" || ${connect} = "yes" ]]; then
