@@ -43,10 +43,15 @@ while getopts :endh option; do
 			do
 			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
 			done
-			read -p "Enter a number to delete: " del
-			sed "${del}d" ${backup} | tee ${file}
-			cat ${file} > ${backup}
-			exit 0
+			if [[ -s ${file} ]]; then
+			  read -p "Enter a number to delete: " del
+			  sed "${del}d" ${backup} | tee ${file}
+			  cat ${file} > ${backup}
+			  exit 0
+			else
+			  echo -e "${BlackRed}nothing to delete${reset}"
+			  exit 0
+			fi
 			;;
 		h)
 			help
