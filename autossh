@@ -2,12 +2,15 @@
 BlackRed="\033[31m"
 BlackGreen="\033[32m"
 reset="\033[0m"
-file="${HOME}/dest.list"
+DIR="${HOME}/.autossh"
+file="${DIR}/autossh"
 DELETE="/tmp/del"
-backup="/tmp/dest.list.backup"
+backup="/tmp/autossh.backup"
 
+mkdir -p ${DIR}
 touch ${file}
 touch ${backup}
+
 perm=$(stat -c %a ${backup})
 NUM="$(sort ${file} | wc -l)"
 
@@ -20,7 +23,7 @@ help()
 
 		  Options:
 		    -h	show this help and exit
-		    -e	create/edit the dest list
+		    -c	create/edit the dest list
 		    -d	delete from list
 		    -n	using autossh with destination name instead of selecting it from list
 	EOF
@@ -32,7 +35,7 @@ while [[ -f ${file} ]]; do
 		exit 0
 	elif [[ $# -gt 0 ]]; then
 
-while getopts :endh option; do
+while getopts :cndh option; do
 	case ${option} in
 		n)
 			ssh $(grep -i $2 ${file} | cut -d ":" -f 3)@$2
@@ -57,7 +60,7 @@ while getopts :endh option; do
 			help
 			exit 0
 			;;
-		e)
+		c)
 echo "Make your own list"
 
 read -p "Continue with editing your list ? [y] " answer
