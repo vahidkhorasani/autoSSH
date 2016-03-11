@@ -19,7 +19,7 @@ Version 2.0 - Mon 7 Mar 2016
 by Vahid Khorasani <vh.khorasani@yahoo.com>
 features added in this version:
 ------------------------------
-- ability to edit the list using '-e' option
+- ability to edit the list using '-c' option
 - ability to delete from list using '-d' option
 - ability to add destinations to '/etc/host' file
 - ability to connect using destination names using '-n' option
