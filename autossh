@@ -4,7 +4,6 @@ BlackGreen="\033[32m"
 reset="\033[0m"
 DIR="${HOME}/.autossh"
 file="${DIR}/autossh"
-DELETE="/tmp/del"
 backup="/tmp/autossh.backup"
 
 mkdir -p ${DIR}
