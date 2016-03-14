@@ -74,7 +74,7 @@ while [[ -n ${answer} ]]; do
 	fi
 done
 
-read -p "Do you want to add destinations to your '/etc'hosts' file too ? [y] " ETC
+read -p "Do you want to add destinations to your '/etc/hosts' file too ? [y] " ETC
 while [[ -n ${ETC} ]]; do
 	if [[ ${ETC} = "y" || ${ETC} = "yes" || ${ETC} = "no" || ${ETC} = "n" ]]; then
 		break
@@ -96,9 +96,9 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	read -p "Enter Hostname/IP: " dest
 	read -p "Pick a name for this IP address: " name
 	read -p "Enter the username you wanna use to login: " user
-	echo "'${name}'":${dest}:${user} >> ${file}
-	if [[ ! ${perm} = 666 ]]; then
-		chmod 666 ${backup}
+	echo ${name}:${dest}:${user} >> ${file}
+	if [[ ! ${perm} = 664 ]]; then
+		chmod 664 ${backup}
 	fi
 	if [[ -z ${ETC} || ${ETC} = "y" || ${ETC} = "yes" ]]; then
 			echo "${dest}	${name}" >> /etc/hosts
