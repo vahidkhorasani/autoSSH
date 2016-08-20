@@ -20,11 +20,11 @@ def main():
 			print('Here are your most often used destionations:')
 			split_hosts(FILE)	
 			NUM = input('Enter a number to connect: ')
+			
 		elif len(sys.argv) > 1 and sys.argv[1] == '-h':
 			help()
 			break
 		elif len(sys.argv) > 1 and sys.argv[1] == '-c':
-			#print('Make your own list now')
 			ANSWER = input('Continue with editing your list ? [y]: ')
 			if len(ANSWER) == 0 or ANSWER in ('y' , 'yes'):
 				ETC = input("Do you want to add destination to your '/etc/hosts' file too ? [y] ")
@@ -46,6 +46,8 @@ def main():
 					print('No valid input')
 					break
 			elif len(ANSWER) > 0 and ANSWER in ('n' , 'no'):
+				print("Your list has been saved to" , FILE)
+				print("You have also a backup list at" , BACKUP)
 				sys.exit()
 			else:
 				print('No valid input')
@@ -59,11 +61,6 @@ def split_hosts(file_name):
 	with fileinput.input(files = (file_name)) as f:
 		for line in f:
 			print(f.lineno() , ":" , line.split(":")[1])
-
-#def split_hosts(file_name):
-#	with open(file_name , 'r') as myfile:
-#		for line in myfile.readlines():
-#			print(line.split(':')[1])
 
 def make_dir():
 	if not os.path.isdir(DIR):
