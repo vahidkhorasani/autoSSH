@@ -13,7 +13,7 @@ def main():
 
 	make_dir()
 
-	autossh = Autossh_File(FILE)
+	autossh = AutosshFile(FILE)
 
 	while os.path.isfile(FILE) is True:
 		if os.stat(FILE).st_size == 0 and len(sys.argv) == 1:
@@ -21,9 +21,9 @@ def main():
 			break
 		elif os.stat(FILE).st_size > 0 and len(sys.argv) == 1:
 			print('Here are your most often used destionations:')
-			autossh.split_hosts(FILE)	
+			autossh.SplitHosts(FILE)	
 			NUM = input('Enter a number to connect: ')
-			if int(NUM) > autossh.num_of_line(FILE):
+			if int(NUM) > autossh.NumOfLine(FILE):
 				print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
 			else:
 				print(Fore.GREEN + 'alan ssh miznam vasat',Style.RESET_ALL)
@@ -62,18 +62,33 @@ def main():
 		#
 		#elif len(sys.argv) > 1 and sys.argv[1] == '-d':
 
-class Autossh_File(object):
+class AutosshFile(object):
 	
 	def __init__(self,f):
 		self.f = f
 	
-	def num_of_line(self,file_name):
+	def NodeIP(self,file_name):
+		with fileinput.input(files = (file_name)) as f:	
+			for line in f:
+				print(line.split(":")[0])
+
+	def NodeName(self,file_name):
+		with fileinput.input(files = (file_name)) as f:	
+			for line in f:
+				print(line.split(":")[1])
+
+	def Username(self,file_name):
+		with fileinput.input(files = (file_name)) as f:	
+			for line in f:
+				print(line.split(":")[2].split(":")[0], end = "")
+
+	def NumOfLine(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				num_lines = sum(1 for line in  open(file_name))
 				return(num_lines)
 		
-	def split_hosts(self,file_name):
+	def SplitHosts(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				print(f.lineno() , ":" , line.split(":")[1])
