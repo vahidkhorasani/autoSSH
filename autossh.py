@@ -3,6 +3,7 @@ import getpass
 import os
 import sys
 import fileinput
+from colorama import Fore,Back,Style
 
 DIR = os.environ['HOME'].__add__('/jafar')
 FILE = DIR.__add__('/autossh')
@@ -12,15 +13,20 @@ def main():
 
 	make_dir()
 
+	autossh = Autossh_File(FILE)
+
 	while os.path.isfile(FILE) is True:
 		if os.stat(FILE).st_size == 0 and len(sys.argv) == 1:
 			help()
 			break
 		elif os.stat(FILE).st_size > 0 and len(sys.argv) == 1:
 			print('Here are your most often used destionations:')
-			split_hosts(FILE)	
+			autossh.split_hosts(FILE)	
 			NUM = input('Enter a number to connect: ')
-			
+			if int(NUM) > autossh.num_of_line(FILE):
+				print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
+			else:
+				print(Fore.GREEN + 'alan ssh miznam vasat',Style.RESET_ALL)
 		elif len(sys.argv) > 1 and sys.argv[1] == '-h':
 			help()
 			break
@@ -56,11 +62,21 @@ def main():
 		#
 		#elif len(sys.argv) > 1 and sys.argv[1] == '-d':
 
-
-def split_hosts(file_name):
-	with fileinput.input(files = (file_name)) as f:
-		for line in f:
-			print(f.lineno() , ":" , line.split(":")[1])
+class Autossh_File(object):
+	
+	def __init__(self,f):
+		self.f = f
+	
+	def num_of_line(self,file_name):
+		with fileinput.input(files = (file_name)) as f:
+			for line in f:
+				num_lines = sum(1 for line in  open(file_name))
+				return(num_lines)
+		
+	def split_hosts(self,file_name):
+		with fileinput.input(files = (file_name)) as f:
+			for line in f:
+				print(f.lineno() , ":" , line.split(":")[1])
 
 def make_dir():
 	if not os.path.isdir(DIR):
