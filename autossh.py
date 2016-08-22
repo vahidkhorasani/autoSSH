@@ -43,9 +43,10 @@ def main():
 			ANSWER = input('Continue with editing your list ? [y]: ')
 			if len(ANSWER) == 0 or ANSWER in ('y' , 'yes'):
 				ETC = input("Do you want to add destination to your '/etc/hosts' file too ? [y] ")
-				if (len(ETC) == 0 or ETC in ('y' , 'yes')) and getpass.getuser() != 'root' :
-					print('Permission denied')
+				if ETC in ('' , 'y' , 'yes') and getpass.getuser() != 'root' :
+					print(Fore.RED + 'Permission denied' , Style.RESET_ALL)
 					break
+				# what if user has root privilege ???
 				elif (len(ETC) > 0 and ETC in ('n' , 'no')) : 
 					DEST = input('Enter Hostname/IP: ')	
 					NAME = input('Pick a name for this destination: ')
