@@ -19,6 +19,7 @@ def main():
 		if os.stat(FILE).st_size == 0 and len(sys.argv) == 1:
 			help()
 			break
+
 		elif os.stat(FILE).st_size > 0 and len(sys.argv) == 1:
 			print('Here are your most often used destionations:')
 			autossh.SplitHosts(FILE)	
@@ -27,9 +28,11 @@ def main():
 				print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
 			else:
 				print(Fore.GREEN + 'alan ssh miznam vasat',Style.RESET_ALL)
+
 		elif len(sys.argv) > 1 and sys.argv[1] == '-h':
 			help()
 			break
+
 		elif len(sys.argv) > 1 and sys.argv[1] == '-c':
 			ANSWER = input('Continue with editing your list ? [y]: ')
 			if len(ANSWER) == 0 or ANSWER in ('y' , 'yes'):
@@ -51,17 +54,28 @@ def main():
 				else:
 					print('No valid input')
 					break
+
 			elif len(ANSWER) > 0 and ANSWER in ('n' , 'no'):
 				print("Your list has been saved to" , FILE)
 				print("You have also a backup list at" , BACKUP)
 				sys.exit()
+
 			else:
 				print('No valid input')
 				break
-		#elif len(sys.argv) > 1 and sys.argv[1] == '-n':
-		#
-		#elif len(sys.argv) > 1 and sys.argv[1] == '-d':
 
+		elif len(sys.argv) > 1 and sys.argv[1] == '-d':
+			autossh.SplitHosts(FILE)
+			if os.stat(FILE).st_size > 0:
+				DEL = input("Enter a number to delete: ")
+				autossh.Del(FILE,int(DEL))
+				print("Now your list is as follow:")
+				autossh.SplitHosts(FILE)
+				break
+			else:
+				print(Fore.RED + "Nothing to delete")
+				break
+		#elif len(sys.argv) > 1 and sys.argv[1] == '-n':
 class AutosshFile(object):
 	
 	def __init__(self,f):
@@ -92,6 +106,16 @@ class AutosshFile(object):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				print(f.lineno() , ":" , line.split(":")[1])
+
+	def Del(self,file_name,line_num):
+		with open(file_name , 'r+') as f:
+			l = f.readlines()
+			l.__delitem__(line_num - 1)
+			with open(file_name , 'w'): 
+				pass
+			with open(file_name , 'r+'):
+				for line in l:
+					f.write(line)
 
 def make_dir():
 	if not os.path.isdir(DIR):
