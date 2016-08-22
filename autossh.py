@@ -23,11 +23,17 @@ def main():
 		elif os.stat(FILE).st_size > 0 and len(sys.argv) == 1:
 			print('Here are your most often used destionations:')
 			autossh.SplitHosts(FILE)	
-			NUM = input('Enter a number to connect: ')
-			if int(NUM) > autossh.NumOfLine(FILE):
-				print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
+			CONT = input("Do you want to connect now ?[y] ")
+			if CONT in ('n' , 'no'):
+				break
+			elif CONT in ('' , 'y' , 'yes'):
+				NUM = input('Enter a number to connect: ')
+				if int(NUM) > autossh.NumOfLine(FILE):
+					print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
+				else:
+					print(Fore.GREEN + 'alan ssh miznam vasat',Style.RESET_ALL)
 			else:
-				print(Fore.GREEN + 'alan ssh miznam vasat',Style.RESET_ALL)
+				print(Fore.RED + "invalid input",Style.RESET_ALL)
 
 		elif len(sys.argv) > 1 and sys.argv[1] == '-h':
 			help()
