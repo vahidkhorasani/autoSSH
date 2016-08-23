@@ -8,6 +8,7 @@ from colorama import Fore,Back,Style
 DIR = os.environ['HOME'].__add__('/jafar')
 FILE = DIR.__add__('/autossh')
 BACKUP = '/tmp/autossh.backup'
+HOSTS = '/etc/hosts'
 
 def main():
 
@@ -41,12 +42,28 @@ def main():
 
 		elif len(sys.argv) > 1 and sys.argv[1] == '-c':
 			ANSWER = input('Continue with editing your list ? [y]: ')
-			if len(ANSWER) == 0 or ANSWER in ('y' , 'yes'):
+			if ANSWER in ('' , 'y' , 'yes'):
 				ETC = input("Do you want to add destination to your '/etc/hosts' file too ? [y] ")
 				if ETC in ('' , 'y' , 'yes') and getpass.getuser() != 'root' :
 					print(Fore.RED + 'Permission denied' , Style.RESET_ALL)
 					break
-				# what if user has root privilege ???
+				elif ETC in ('' , 'y' , 'yes') and getpass.getuser() == 'root' :
+					DEST = input('Enter Hostname/IP: ')	
+					NAME = input('Pick a name for this destination: ')
+					USER = input('Enter the username you wanna use to login: ')
+					with open(FILE, 'a') as autossh:
+						autossh.write(DEST)
+						autossh.write(':')
+						autossh.write(NAME)
+						autossh.write(':')
+						autossh.write(USER)
+						autossh.write('\n')
+						with open(HOSTS , 'a')	as hosts:
+							hosts.write(DEST)
+							hosts.write("	")
+							hosts.write(NAME)
+							hosts.write('\n')
+
 				elif (len(ETC) > 0 and ETC in ('n' , 'no')) : 
 					DEST = input('Enter Hostname/IP: ')	
 					NAME = input('Pick a name for this destination: ')
@@ -59,7 +76,7 @@ def main():
 						autossh.write(USER)
 						autossh.write('\n')
 				else:
-					print('No valid input')
+					print(Fore.RED + 'No valid input', Style.RESET_ALL)
 					break
 
 			elif len(ANSWER) > 0 and ANSWER in ('n' , 'no'):
