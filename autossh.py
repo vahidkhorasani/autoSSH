@@ -99,7 +99,10 @@ def main():
 			else:
 				print(Fore.RED + "Nothing to delete")
 				break
-		#elif len(sys.argv) > 1 and sys.argv[1] == '-n':
+		elif len(sys.argv) > 1 and sys.argv[1] == '-n':
+			print(Fore.GREEN + "alan ba esm vasat SSH mizanam", Style.RESET_ALL)
+			break
+
 class AutosshFile(object):
 	
 	def __init__(self,f):
