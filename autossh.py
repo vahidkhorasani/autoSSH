@@ -1,8 +1,9 @@
-#!/usr/bin/python3.5
+!/usr/bin/python3.5
 import getpass
 import os
 import sys
 import fileinput
+import subprocess
 from colorama import Fore,Back,Style
 
 DIR = os.environ['HOME'].__add__('/jafar')
@@ -32,7 +33,9 @@ def main():
 				if int(NUM) > autossh.NumOfLine(FILE):
 					print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
 				else:
-					print(Fore.GREEN + 'alan ssh miznam vasat',Style.RESET_ALL)
+					USERNAME=autossh.Username(FILE,NUM)
+					IPADDR=autossh.NodeIP(FILE,NUM)
+					subprocess.run(["ssh","-vv","-l",str(USERNAME),str(IPADDR)])
 			else:
 				print(Fore.RED + "invalid input",Style.RESET_ALL)
 
@@ -108,20 +111,23 @@ class AutosshFile(object):
 	def __init__(self,f):
 		self.f = f
 	
-	def NodeIP(self,file_name):
-		with fileinput.input(files = (file_name)) as f:	
-			for line in f:
-				print(line.split(":")[0])
+	def NodeIP(self,file_name,line_num):
+		with fileinput.input(files = (file_name)) as f:
+			for i,line in enumerate(f):
+				if i+1 == int(line_num):
+					return(line.split(":")[0])
 
-	def NodeName(self,file_name):
-		with fileinput.input(files = (file_name)) as f:	
-			for line in f:
-				print(line.split(":")[1])
+	def NodeName(self,file_name,line_num):
+		with fileinput.input(files = (file_name)) as f:
+			for i,line in enumerate(f):
+				if i+1 == int(line_num):
+					return(line.split(":")[1])
 
-	def Username(self,file_name):
-		with fileinput.input(files = (file_name)) as f:	
-			for line in f:
-				print(line.split(":")[2].split(":")[0], end = "")
+	def Username(self,file_name,line_num):
+		with fileinput.input(files = (file_name)) as f:
+			for i,line in enumerate(f):
+				if i+1 == int(line_num):
+					return(line.strip().split(":")[2].split(":")[0])
 
 	def NumOfLine(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
