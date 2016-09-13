@@ -96,7 +96,7 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	read -p "Enter Hostname/IP: " dest
 	read -p "Pick a name for this IP address: " name
 	read -p "Enter the username you wanna use to login: " user
-	echo ${name}:${dest}:${user} >> ${file}
+	echo ${dest}:${name}:${user} >> ${file}
 	if [[ ! ${perm} = 664 ]]; then
 		chmod 664 ${backup}
 	fi
