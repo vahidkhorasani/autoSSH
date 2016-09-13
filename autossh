@@ -37,7 +37,11 @@ while [[ -f ${file} ]]; do
 while getopts :cndh option; do
 	case ${option} in
 		n)
-			ssh $(grep -i $2 ${file} | cut -d ":" -f 3)@$2
+			USER="$(grep -i $2 ${file} | cut -d ":" -f 3)"
+			IPADDR="$(grep -i $2 ${file} | cut -d ":" -f 1)"
+			echo $USER
+			echo $IPADDR
+			ssh ${USER}@${IPADDR}
 			exit 0
 			;;
 		d)
