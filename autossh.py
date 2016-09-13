@@ -7,7 +7,7 @@ import subprocess
 from colorama import Fore,Back,Style
 from shutil import copyfile
 
-DIR = os.environ['HOME'].__add__('/.jafar')
+DIR = os.environ['HOME'].__add__('/.autossh')
 FILE = DIR.__add__('/autossh')
 BACKUP = '/tmp/autossh.backup'
 HOSTS = '/etc/hosts'
