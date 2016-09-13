@@ -5,6 +5,7 @@ import sys
 import fileinput
 import subprocess
 from colorama import Fore,Back,Style
+from shutil import copyfile
 
 DIR = os.environ['HOME'].__add__('/.jafar')
 FILE = DIR.__add__('/autossh')
@@ -82,8 +83,9 @@ def main():
 					break
 
 			elif len(ANSWER) > 0 and ANSWER in ('n' , 'no'):
-				print("Your list has been saved to" , FILE)
-				print("You have also a backup list at" , BACKUP)
+				copyfile(FILE,BACKUP)
+				print(Fore.GREEN + "Your list has been saved to",Style.RESET_ALL,FILE)
+				print(Fore.GREEN + "You have also a backup list at",Style.RESET_ALL,BACKUP)
 				sys.exit()
 
 			else:
@@ -95,6 +97,7 @@ def main():
 			if os.stat(FILE).st_size > 0:
 				DEL = input("Enter a number to delete: ")
 				autossh.Del(FILE,int(DEL))
+				copyfile(FILE,BACKUP)
 				print("Now your list is as follow:")
 				autossh.SplitHosts(FILE)
 				break
