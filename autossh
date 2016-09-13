@@ -46,10 +46,15 @@ while getopts :cndh option; do
 			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 2 | sed -n ${i}p)\n"
 			done
 			if [[ -s ${file} ]]; then
-			  read -p "Enter a number to delete: " del
-			  sed "${del}d" ${backup} | tee ${file}
-			  cat ${file} > ${backup}
-			  exit 0
+				read -p "Enter a number to delete: " del
+			  	if [[ ${del} -ne 0 ]]; then
+					sed "${del}d" ${backup} | tee ${file}
+					cat ${file} > ${backup}
+					exit 0
+				else
+					echo -e "${BlackRed}You didn't enter any number${reset}"
+					exit 0
+				fi
 			else
 			  echo -e "${BlackRed}nothing to delete${reset}"
 			  exit 0

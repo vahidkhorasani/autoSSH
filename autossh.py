@@ -86,8 +86,22 @@ def main():
 				copyfile(FILE,BACKUP)
 				print(Fore.GREEN + "Your list has been saved to",Style.RESET_ALL,FILE)
 				print(Fore.GREEN + "You have also a backup list at",Style.RESET_ALL,BACKUP)
-				sys.exit()
 
+				print('Here are your most often used destionations:')
+				autossh = AutosshFile(FILE)
+				autossh.SplitHosts(FILE)	
+				CONT = input("Do you want to connect now ?[y] ")
+				if CONT in ('n' , 'no'):
+					break
+				elif CONT in ('' , 'y' , 'yes'):
+					NUM = input('Enter a number to connect: ')
+					if int(NUM) > autossh.NumOfLine(FILE):
+						print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
+					else:
+						USERNAME=autossh.Username(FILE,NUM)
+						IPADDR=autossh.NodeIP(FILE,NUM)
+						subprocess.run(["ssh","-l",str(USERNAME),str(IPADDR)])
+						break
 			else:
 				print('No valid input')
 				break
@@ -96,11 +110,15 @@ def main():
 			autossh.SplitHosts(FILE)
 			if os.stat(FILE).st_size > 0:
 				DEL = input("Enter a number to delete: ")
-				autossh.Del(FILE,int(DEL))
-				copyfile(FILE,BACKUP)
-				print("Now your list is as follow:")
-				autossh.SplitHosts(FILE)
-				break
+				if DEL == "":
+					print(Fore.RED + "You didn't enter any number",Style.RESET_ALL)
+					break
+				else:
+					autossh.Del(FILE,int(DEL))
+					copyfile(FILE,BACKUP)
+					print("Now your list is as follow:")
+					autossh.SplitHosts(FILE)
+					break
 			else:
 				print(Fore.RED + "Nothing to delete")
 				break
