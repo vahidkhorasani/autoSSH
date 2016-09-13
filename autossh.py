@@ -6,7 +6,7 @@ import fileinput
 import subprocess
 from colorama import Fore,Back,Style
 
-DIR = os.environ['HOME'].__add__('/jafar')
+DIR = os.environ['HOME'].__add__('/.jafar')
 FILE = DIR.__add__('/autossh')
 BACKUP = '/tmp/autossh.backup'
 HOSTS = '/etc/hosts'
@@ -35,7 +35,8 @@ def main():
 				else:
 					USERNAME=autossh.Username(FILE,NUM)
 					IPADDR=autossh.NodeIP(FILE,NUM)
-					subprocess.run(["ssh","-vv","-l",str(USERNAME),str(IPADDR)])
+					subprocess.run(["ssh","-l",str(USERNAME),str(IPADDR)])
+					break
 			else:
 				print(Fore.RED + "invalid input",Style.RESET_ALL)
 
@@ -103,7 +104,9 @@ def main():
 				print(Fore.RED + "Nothing to delete")
 				break
 		elif len(sys.argv) > 1 and sys.argv[1] == '-n':
-			print(Fore.GREEN + "alan ba esm vasat SSH mizanam", Style.RESET_ALL)
+			HOST=autossh.NodeName(FILE,sys.argv[2])
+			USERNAME=autossh.HostBaseUserName(FILE,sys.argv[2])
+			subprocess.run(["ssh","-l",USERNAME,HOST])
 			break
 
 class AutosshFile(object):
@@ -117,11 +120,17 @@ class AutosshFile(object):
 				if i+1 == int(line_num):
 					return(line.split(":")[0])
 
-	def NodeName(self,file_name,line_num):
+	def NodeName(self,file_name,host_name):
 		with fileinput.input(files = (file_name)) as f:
-			for i,line in enumerate(f):
-				if i+1 == int(line_num):
+			for line in f:
+				if line.split(":")[1] == host_name:
 					return(line.split(":")[1])
+
+	def HostBaseUserName(self,file_name,host_name):
+		with fileinput.input(file_name) as f:
+			for line in f:		
+				if line.split(":")[1] == host_name:
+					return(line.strip().split(":")[2].split(":")[0])
 
 	def Username(self,file_name,line_num):
 		with fileinput.input(files = (file_name)) as f:
