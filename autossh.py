@@ -12,9 +12,7 @@ BACKUP = '/tmp/autossh.backup'
 HOSTS = '/etc/hosts'
 
 def main():
-
 	make_dir()
-
 	autossh = AutosshFile(FILE)
 
 	while os.path.isfile(FILE) is True:
@@ -113,42 +111,35 @@ class AutosshFile(object):
 	
 	def __init__(self,f):
 		self.f = f
-	
 	def NodeIP(self,file_name,line_num):
 		with fileinput.input(files = (file_name)) as f:
 			for i,line in enumerate(f):
 				if i+1 == int(line_num):
 					return(line.split(":")[0])
-
 	def NodeName(self,file_name,host_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				if line.split(":")[1] == host_name:
 					return(line.split(":")[1])
-
 	def HostBaseUserName(self,file_name,host_name):
 		with fileinput.input(file_name) as f:
 			for line in f:		
 				if line.split(":")[1] == host_name:
 					return(line.strip().split(":")[2].split(":")[0])
-
 	def Username(self,file_name,line_num):
 		with fileinput.input(files = (file_name)) as f:
 			for i,line in enumerate(f):
 				if i+1 == int(line_num):
 					return(line.strip().split(":")[2].split(":")[0])
-
 	def NumOfLine(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				num_lines = sum(1 for line in  open(file_name))
 				return(num_lines)
-		
 	def SplitHosts(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				print(f.lineno() , ":" , line.split(":")[1])
-
 	def Del(self,file_name,line_num):
 		with open(file_name , 'r+') as f:
 			l = f.readlines()
@@ -163,10 +154,8 @@ def make_dir():
 	if not os.path.isdir(DIR):
 		os.mkdir( DIR , mode = 0o775 )
 	open( FILE , 'a')
-
 def help():
-
-	help = """ usage: autossh [-hedn] [remote_hosname]
+	help = """ usage: autossh [-hcdn] [remote_hostname]
             Creates a list from your most often used destinations and
             will refer to it anytime you try to connet through SSH.
 
@@ -175,7 +164,5 @@ def help():
             -c  create/edit the dest list
             -d  delete from list
             -n  using autossh with destination name instead of selecting it from list """
-	
 	print(help)
-
 if __name__ == "__main__": main()

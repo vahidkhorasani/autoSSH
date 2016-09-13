@@ -16,7 +16,7 @@ NUM="$(sort ${file} | wc -l)"
 help()
 {
 	cat <<- EOF
-		  usage: autossh [-hedn] [remote_hosname]
+		  usage: autossh [-hcdn] [remote_hostname]
 	        Creates a list from your most often used destinations and
 	        will refer to it anytime you try to connet through SSH.
 
