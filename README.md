@@ -26,6 +26,9 @@ features added in this version:
 
 Version 3.0 - Tue 13 Sep 2016
 by Vahid Khorasani <vh.khorasani@yahoo.com>
+
+features added in this version:
+------------------------------
 In this version autossh is available in Python and you can run this script using Python.(Python3.5)
 All the features are available and you can use each of them that you are more comfortable with.For example you can use one of them for creating your list and the other one for editing or connecting.
 Although both of them are perfect in operation but the one that has been written in Python is better in '-n' option, because it searchs and finds the hostname from the 'autossh' file that you yourself create but in the
