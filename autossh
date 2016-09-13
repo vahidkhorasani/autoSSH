@@ -43,7 +43,7 @@ while getopts :cndh option; do
 		d)
 			for (( i=1 ; i<=${NUM} ; i+=1 ))
 			do
-			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
+			echo -ne "${i}: $(cat ${file} | cut -d ":" -f 2 | sed -n ${i}p)\n"
 			done
 			if [[ -s ${file} ]]; then
 			  read -p "Enter a number to delete: " del
@@ -108,8 +108,8 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 	  if [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; then
 	  	answer="y"
 	  elif	[[ ${answer} = "n" || ${answer} = "no" ]]; then
-		echo "your list has been saved to '${file}'"
-		echo "you have also a backup list at '${backup}'"
+		echo -ne "${BlackGreen}your list has been saved to${reset} '${file}'\n"
+		echo -ne "${BlackGreen}you have also a backup list at${reset}'${backup}'\n"
 		# Uncomment the following line if you wanna check the destination list with more detail.
 		#echo -ne "${BlackGreen}$(cat ${file})\n${reset}"
 	  else
@@ -137,7 +137,7 @@ NUM_LINE="$(sort ${file} | wc -l)"
 echo "Here are your most often used destionations: "
 for (( i=1 ; i<=${NUM_LINE} ; i+=1 ))
   do
-	echo -ne "${i}: $(sort ${file} | cut -d ":" -f 1 | sed -n ${i}p)\n"
+	echo -ne "${i}: $(sort ${file} | cut -d ":" -f 2 | sed -n ${i}p)\n"
   done
 read -p "Do you wanna connect now ? [y] " connect
 	while [[ -n ${connect} || ${connect} != "y" || ${connect} != "yes" || ${connect} != "n" || ${connect} != "no" ]]; do
@@ -152,8 +152,8 @@ while [[ ${number} -gt ${NUM_LINE} ]]; do
 	fi
 done
 USERNAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 3)"
-NODE_IP="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 2)"
-NODE_NAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 1)"
+NODE_IP="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 1)"
+NODE_NAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 2)"
 echo -e "${BlackGreen}Username:${USERNAME}${reset}"
 echo -e "${BlackGreen}IP/HOSTNAME:${NODE_IP}${reset}"
 echo -e "${BlackGreen}NAME:${NODE_NAME}${reset}"
