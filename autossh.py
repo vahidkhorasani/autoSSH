@@ -15,7 +15,6 @@ HOSTS = '/etc/hosts'
 def main():
 	make_dir()
 	autossh = AutosshFile(FILE)
-
 	while os.path.isfile(FILE) is True:
 		if os.stat(FILE).st_size == 0 and len(sys.argv) == 1:
 			help()
@@ -23,17 +22,17 @@ def main():
 
 		elif os.stat(FILE).st_size > 0 and len(sys.argv) == 1:
 			print('Here are your most often used destionations:')
-			autossh.SplitHosts(FILE)	
+			autossh.split_hosts(FILE)	
 			CONT = input("Do you want to connect now ?[y] ")
 			if CONT in ('n' , 'no'):
 				break
 			elif CONT in ('' , 'y' , 'yes'):
 				NUM = input('Enter a number to connect: ')
-				if int(NUM) > autossh.NumOfLine(FILE):
+				if int(NUM) > autossh.num_of_line(FILE):
 					print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
 				else:
-					USERNAME=autossh.Username(FILE,NUM)
-					IPADDR=autossh.NodeIP(FILE,NUM)
+					USERNAME=autossh.username(FILE,NUM)
+					IPADDR=autossh.node_ip(FILE,NUM)
 					subprocess.run(["ssh","-l",str(USERNAME),str(IPADDR)])
 					break
 			else:
@@ -89,17 +88,17 @@ def main():
 
 				print('Here are your most often used destionations:')
 				autossh = AutosshFile(FILE)
-				autossh.SplitHosts(FILE)	
+				autossh.split_hosts(FILE)	
 				CONT = input("Do you want to connect now ?[y] ")
 				if CONT in ('n' , 'no'):
 					break
 				elif CONT in ('' , 'y' , 'yes'):
 					NUM = input('Enter a number to connect: ')
-					if int(NUM) > autossh.NumOfLine(FILE):
+					if int(NUM) > autossh.num_of_line(FILE):
 						print(Fore.RED + 'Your number is not in the valid range',Style.RESET_ALL)
 					else:
-						USERNAME=autossh.Username(FILE,NUM)
-						IPADDR=autossh.NodeIP(FILE,NUM)
+						USERNAME=autossh.username(FILE,NUM)
+						IPADDR=autossh.node_ip(FILE,NUM)
 						subprocess.run(["ssh","-l",str(USERNAME),str(IPADDR)])
 						break
 			else:
@@ -107,24 +106,24 @@ def main():
 				break
 
 		elif len(sys.argv) > 1 and sys.argv[1] == '-d':
-			autossh.SplitHosts(FILE)
+			autossh.split_hosts(FILE)
 			if os.stat(FILE).st_size > 0:
 				DEL = input("Enter a number to delete: ")
 				if DEL == "":
 					print(Fore.RED + "You didn't enter any number",Style.RESET_ALL)
 					break
 				else:
-					autossh.Del(FILE,int(DEL))
+					autossh.delete(FILE,int(DEL))
 					copyfile(FILE,BACKUP)
 					print("Now your list is as follow:")
-					autossh.SplitHosts(FILE)
+					autossh.split_hosts(FILE)
 					break
 			else:
 				print(Fore.RED + "Nothing to delete")
 				break
 		elif len(sys.argv) > 1 and sys.argv[1] == '-n':
-			HOST=autossh.HostBaseIP(FILE,sys.argv[2])
-			USERNAME=autossh.HostBaseUserName(FILE,sys.argv[2])
+			HOST=autossh.host_base_ip(FILE,sys.argv[2])
+			USERNAME=autossh.host_base_username(FILE,sys.argv[2])
 			subprocess.run(["ssh","-l",USERNAME,HOST])
 			break
 
@@ -132,48 +131,48 @@ class AutosshFile(object):
 	
 	def __init__(self,f):
 		self.f = f
-	def NodeIP(self,file_name,line_num):
+	def node_ip(self,file_name,line_num):
 		with fileinput.input(files = (file_name)) as f:
 			for i,line in enumerate(f):
 				if i+1 == int(line_num):
 					return(line.split(":")[0])
 
-	def HostBaseIP(self,file_name,host_name):
+	def host_base_ip(self,file_name,host_name):
 		with fileinput.input(file_name) as f:
 			for line in f:		
 				if line.split(":")[1] == host_name:
 					return(line.strip().split(":")[0])
 
-	def NodeName(self,file_name,host_name):
+	def node_name(self,file_name,host_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				if line.split(":")[1] == host_name:
 					return(line.split(":")[1])
 
-	def HostBaseUserName(self,file_name,host_name):
+	def host_base_username(self,file_name,host_name):
 		with fileinput.input(file_name) as f:
 			for line in f:		
 				if line.split(":")[1] == host_name:
 					return(line.strip().split(":")[2].split(":")[0])
 
-	def Username(self,file_name,line_num):
+	def username(self,file_name,line_num):
 		with fileinput.input(files = (file_name)) as f:
 			for i,line in enumerate(f):
 				if i+1 == int(line_num):
 					return(line.strip().split(":")[2].split(":")[0])
 
-	def NumOfLine(self,file_name):
+	def num_of_line(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				num_lines = sum(1 for line in  open(file_name))
 				return(num_lines)
 
-	def SplitHosts(self,file_name):
+	def split_hosts(self,file_name):
 		with fileinput.input(files = (file_name)) as f:
 			for line in f:
 				print(f.lineno() , ":" , line.split(":")[1])
 
-	def Del(self,file_name,line_num):
+	def delete(self,file_name,line_num):
 		with open(file_name , 'r+') as f:
 			l = f.readlines()
 			l.__delitem__(line_num - 1)
