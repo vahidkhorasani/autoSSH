@@ -103,9 +103,10 @@ while [[ -z ${answer} || ${answer} = "y" || ${answer} = "yes" ]]; do
 
   	while [[ ${answer} = "y" ]]; do
 	read -p "Enter Hostname/IP: " dest
+	read -p "Enter ssh port number: " port
 	read -p "Pick a name for this IP address: " name
 	read -p "Enter the username you wanna use to login: " user
-	echo ${dest}:${name}:${user} >> ${file}
+	echo ${user}:${name}:${dest}:${port} >> ${file}
 	if [[ ! ${perm} = 664 ]]; then
 		chmod 664 ${backup}
 	fi
@@ -160,14 +161,16 @@ while [[ ${number} -gt ${NUM_LINE} ]]; do
 		exit 0
 	fi
 done
-USERNAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 3)"
-NODE_IP="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 1)"
+USERNAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 1)"
+NODE_IP="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 3)"
 NODE_NAME="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 2)"
+PORT_NUMBER="$(sort ${file} | sed -n ${number}p | cut -d ":" -f 4)"
 echo -e "${BlackGreen}Username:${USERNAME}${reset}"
 echo -e "${BlackGreen}IP/HOSTNAME:${NODE_IP}${reset}"
 echo -e "${BlackGreen}NAME:${NODE_NAME}${reset}"
+echo -e "${BlackGreen}PORT:${PORT_NUMEBR}${reset}"
 
-	ssh ${USERNAME}@${NODE_IP}
+	ssh ${USERNAME}@${NODE_IP} -p ${PORT_NUMBER}
 	exit 0
 # Uncomment this if you want to confirm the information before connecting.
 #read -p "confirm ?[y]" confirm
