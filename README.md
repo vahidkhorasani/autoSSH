@@ -11,11 +11,11 @@ You can also add this script to your PATH and have it as one of your shell comma
 I hope you enjoy it !
 
 Version 1.0 - Sun 3 Jan 2016
-by Vahid Khorasani <vh.khorasani@yahoo.com>
+by Vahid Khorasani <vh.khorasani@gmail.com>
 
 
 Version 2.0 - Mon 7 Mar 2016
-by Vahid Khorasani <vh.khorasani@yahoo.com>
+by Vahid Khorasani <vh.khorasani@gmail.com>
 features added in this version:
 ------------------------------
 - ability to edit the list using '-c' option
@@ -25,7 +25,7 @@ features added in this version:
 
 
 Version 3.0 - Tue 13 Sep 2016
-by Vahid Khorasani <vh.khorasani@yahoo.com>
+by Vahid Khorasani <vh.khorasani@gmail.com>
 
 features added in this version:
 ------------------------------
